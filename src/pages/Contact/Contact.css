@@ -1,0 +1,11 @@
+.contact {
+    background-color: #f0f0f0;
+    text-align: center;
+    padding: 50px 20px;
+}
+
+@media (min-width: 768px) {
+    .contact {
+        padding: 80px 40px;
+    }
+}

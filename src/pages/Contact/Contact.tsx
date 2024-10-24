@@ -1,6 +1,9 @@
-const Contact = () => {
+import React from 'react'
+import './Contact.css'
+
+const Contact: React.FC = () => {
   return (
-    <div>Contact</div>
+    <section className='contact'>Contact</section>
   )
 }
 

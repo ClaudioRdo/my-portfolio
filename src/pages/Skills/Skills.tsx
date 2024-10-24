@@ -1,6 +1,9 @@
-const Skills = () => {
+import React from 'react'
+import './Skills.css'
+
+const Skills: React.FC = () => {
   return (
-    <div>Skills</div>
+    <section className='skills'>Skills</section>
   )
 }
 
