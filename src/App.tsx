@@ -8,7 +8,7 @@ import Skills from './pages/Skills/Skills'
 function App() {
   return (
     <Layout>
-      <Home/>
+      <Home />
       <About />
       <Skills />
       <Projects />

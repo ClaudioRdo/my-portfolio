@@ -3,7 +3,7 @@ import './Home.css';
 
 const Home: React.FC = () => {
   return (
-    <section className="home">Home</section>
+    <section id="home" className="home">Home</section>
   )
 }
 
