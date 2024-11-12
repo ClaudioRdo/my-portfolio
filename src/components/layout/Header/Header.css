@@ -3,12 +3,13 @@
   justify-content: space-between;
   align-items: center;
   padding: 0px 40px;
-  background-color: #333;
-  color: #fff;
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
   position: sticky;
   top: 0;
   z-index: 1000;
   width: 100%;
+  border-bottom: 3px solid var(--color-text-dark);
 }
 
 .logo {
@@ -45,12 +46,24 @@
   color: #fff;
   text-decoration: none;
   padding: 10px 20px;
-  transition: background-color 0.3s;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
 }
 
-.menu ul li a:hover {
-  background-color: #444;
-  border-radius: 5px;
+.menu ul li a::before {
+  content: "";
+  position: absolute;
+  bottom: 0; /* Posición debajo del texto */
+  left: 0;
+  width: 0;
+  height: 2px; /* Grosor de la línea */
+  background-color: var(--color-text-light); /* Color de la línea */
+  transition: width 0.3s ease; /* Duración de la animación */
+}
+
+.menu ul li a:hover::before {
+  width: 100%; /* Expande la línea de izquierda a derecha */
 }
 
 /* Responsividad para pantallas más pequeñas */

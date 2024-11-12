@@ -1,3 +1,5 @@
+@import './variables.css';
+
 body,
 html {
     margin: 0;
@@ -36,6 +38,15 @@ main {
     justify-content: center;
     align-items: center;
     text-align: center;
+}
+
+body.dark-mode {
+    --color-primary: #222;
+    --color-background: #121212;
+    --color-text-light: #ddd;
+    --color-text-dark: #fff;
+    background-color: var(--color-background);
+    color: var(--color-text-dark);
 }
 
 @media (min-width: 768px) {

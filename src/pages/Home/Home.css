@@ -35,7 +35,7 @@
 /* Ancho mínimo para computadoras de escritorio */
 @media (min-width: 769px) {
     .home {
-        max-width: 800px; /* Ancho máximo para computadoras */
+        max-width: 1200px; /* Ancho máximo para computadoras */
         padding: 80px 40px; /* Ajuste de padding */
     }
 }
