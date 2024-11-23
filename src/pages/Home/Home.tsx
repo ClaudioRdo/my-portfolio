@@ -1,9 +1,10 @@
 import React from 'react';
+import { Page } from "../../components/layout/index"
 import './Home.css';
 
 const Home: React.FC = () => {
   return (
-    <section id="home" className="home">Home</section>
+    <Page id="home" className="home">Home</Page>
   )
 }
 

@@ -1,8 +1,8 @@
 :root {
-    --color-primary: #3D5A80; /* Color principal */
-    --color-secondary: #98C1D9; /* Color secundario */
-    --color-accent: #EE6C4D; /* Color de acento */
+    --color-primary: #293241; /* Color principal */
+    --color-secondary: #638bc0 ; /* Color secundario */
+    --color-accent: #ee886f ; /* Color de acento */
     --color-background: #f0f0f0; /* Color de fondo */
-    --color-text-light: #E0FBFC; /* Texto claro */
+    --color-text-light: #e6e6e6; /* Texto claro */
     --color-text-dark: #293241; /* Texto oscuro */
 }

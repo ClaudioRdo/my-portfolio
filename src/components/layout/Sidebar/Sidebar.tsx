@@ -1,10 +1,10 @@
-import React from 'react';
-import './Sidebar.css';
-import { FaGithub, FaLinkedin, FaSun, FaMoon } from 'react-icons/fa';
+import React from "react"
+import "./Sidebar.css"
+import { FaGithub, FaLinkedin, FaSun, FaMoon } from "react-icons/fa"
 
 interface SidebarProps {
-  isDarkMode: boolean;
-  toggleDarkMode: () => void;
+  isDarkMode: boolean
+  toggleDarkMode: () => void
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isDarkMode, toggleDarkMode }) => {
@@ -20,7 +20,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isDarkMode, toggleDarkMode }) => {
         {isDarkMode ? <FaMoon /> : <FaSun />}
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default Sidebar;
+export default Sidebar

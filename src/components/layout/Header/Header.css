@@ -5,11 +5,17 @@
   padding: 0px 40px;
   background-color: var(--color-primary);
   color: var(--color-text-light);
-  position: sticky;
+  position: fixed;
   top: 0;
   z-index: 1000;
   width: 100%;
-  border-bottom: 3px solid var(--color-text-dark);
+  height: 60px;
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+.header.scrolled {
+  background-color: rgba(41, 50, 65, 0.55); /* Fondo semitransparente */
+  backdrop-filter: blur(10px); /* Efecto de desenfoque */
 }
 
 .logo {
@@ -43,7 +49,7 @@
 }
 
 .menu ul li a {
-  color: #fff;
+  text-transform: uppercase;
   text-decoration: none;
   padding: 10px 20px;
   position: relative;
@@ -58,12 +64,16 @@
   left: 0;
   width: 0;
   height: 2px; /* Grosor de la línea */
-  background-color: var(--color-text-light); /* Color de la línea */
+  background-color: var(--color-secondary); /* Color de la línea */
   transition: width 0.3s ease; /* Duración de la animación */
 }
 
+.menu ul li a:hover {
+  color: var(--color-secondary);
+}
+
 .menu ul li a:hover::before {
-  width: 100%; /* Expande la línea de izquierda a derecha */
+  width: 100%; 
 }
 
 /* Responsividad para pantallas más pequeñas */

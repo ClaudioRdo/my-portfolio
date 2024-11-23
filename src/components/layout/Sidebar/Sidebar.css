@@ -8,8 +8,9 @@
     align-items: center;
     background-color: var(--color-primary);
     padding: 10px;
+    border: 1px solid var(--color-accent);
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 5px 5px var(--color-accent);
   }
   
   .icon {
@@ -19,7 +20,7 @@
   }
   
   .icon:hover {
-    color: var(--color-accent); /* Cambia el color en hover */
+    color: var(--color-secondary); /* Cambia el color en hover */
   }
   
   .toggle {
@@ -31,5 +32,5 @@
   }
   
   .toggle:hover {
-    color: var(--color-accent); /* Color de acento en hover */
+    color: var(--color-secondary); /* Color de acento en hover */
   }

@@ -1,9 +1,10 @@
-import React from 'react'
-import './Skills.css'
+import React from "react"
+import { Page } from "../../components/layout/index"
+import "./Skills.css"
 
 const Skills: React.FC = () => {
   return (
-    <section id='skills' className='skills'>Skills</section>
+    <Page id='skills' className='skills'>Skills</Page>
   )
 }
 
