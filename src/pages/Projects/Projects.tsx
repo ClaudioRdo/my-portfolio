@@ -4,7 +4,7 @@ import "./Projects.css"
 
 const Projects: React.FC = () => {
   return (
-    <Page id="projects" className='projects'>Projects</Page>
+    <Page id="projects" className="projects">Projects</Page>
   )
 }
 

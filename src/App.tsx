@@ -11,9 +11,8 @@ function App() {
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode)
-    document.body.classList.toggle('dark-mode', !isDarkMode)
+    document.body.classList.toggle("dark-mode", !isDarkMode)
   }
-
 
   return (
     <>
