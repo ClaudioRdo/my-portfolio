@@ -12,6 +12,10 @@ jobs:
     name: Deploy PR to Amplify
     runs-on: ubuntu-latest
 
+    env:
+      APP_ID: ${{ secrets.AMPLIFY_APP_ID }} # ID de la aplicación Amplify como variable de entorno
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -20,7 +24,6 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
       run: |
         aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
         aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
@@ -29,14 +32,12 @@ jobs:
     - name: Create Amplify Deployment
       id: create-deployment
       run: |
-        APP_ID="<AMPLIFY_APP_ID>" # Cambia esto por el ID de tu app en Amplify
         BRANCH_NAME="pr-${{ github.event.number }}" # Usa el número del PR como nombre del branch
         DEPLOYMENT_RESPONSE=$(aws amplify create-deployment --app-id $APP_ID --branch-name $BRANCH_NAME)
         echo "AMPLIFY_URL=$(echo $DEPLOYMENT_RESPONSE | jq -r '.jobSummary | .[0] | .summary')" >> $GITHUB_ENV
 
     - name: Start Amplify Deployment
       run: |
-        APP_ID="<AMPLIFY_APP_ID>"
         BRANCH_NAME="pr-${{ github.event.number }}"
         DEPLOYMENT_ID=$(echo $DEPLOYMENT_RESPONSE | jq -r '.deploymentId')
         aws amplify start-deployment --app-id $APP_ID --branch-name $BRANCH_NAME --deployment-id $DEPLOYMENT_ID
