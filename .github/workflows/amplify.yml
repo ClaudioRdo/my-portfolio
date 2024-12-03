@@ -21,11 +21,12 @@ jobs:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: ${{ secrets.AWS_REGION }}
+        APP_ID: ${{ secrets.AMPLIFY_APP_ID }}  # Usa el secret directamente aquí
       run: |
         aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
         aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
         aws configure set default.region $AWS_REGION
-        echo "APP_ID=d3rzqs8zfsg1v1" >> $GITHUB_ENV  # Exporta APP_ID a todos los pasos siguientes
+        echo "APP_ID=$APP_ID" >> $GITHUB_ENV  # Exporta APP_ID a todos los pasos siguientes
 
     - name: Verify APP_ID environment variable
       run: echo "APP_ID=$APP_ID"  # Verifica que APP_ID esté disponible
