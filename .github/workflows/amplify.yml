@@ -25,30 +25,18 @@ jobs:
         aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
         aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
         aws configure set default.region $AWS_REGION
-        echo "APP_ID=d3rzqs8zfsg1v1" >> $GITHUB_ENV  # Exportar APP_ID para los pasos siguientes
-        echo "APP_ID exportado a GITHUB_ENV: d3rzqs8zfsg1v1"  # Depuración
+        echo "APP_ID=d3rzqs8zfsg1v1" >> $GITHUB_ENV  # Exporta APP_ID a todos los pasos siguientes
 
     - name: Verify APP_ID environment variable
-      run: |
-        echo "Verificando APP_ID: $APP_ID"  # Debería mostrar el valor de APP_ID
+      run: echo "APP_ID=$APP_ID"  # Verifica que APP_ID esté disponible
 
     - name: Ensure Branch Exists in Amplify
       run: |
         BRANCH_NAME="pr-${{ github.event.number }}"
-        echo "APP_ID en el paso Ensure Branch Exists: $APP_ID"  # Verifica el valor de APP_ID
         aws amplify create-branch --app-id $APP_ID --branch-name $BRANCH_NAME || echo "Branch already exists"
-
-    - name: Create Amplify Deployment
-      id: create-deployment
+    
+    # Amplify debería manejar automáticamente los despliegues cuando detecte cambios
+    - name: Trigger Amplify Deploy (auto-triggered by PR)
       run: |
-        BRANCH_NAME="pr-${{ github.event.number }}"
-        echo "APP_ID en el paso Create Deployment: $APP_ID"  # Verifica el valor de APP_ID
-        DEPLOYMENT_RESPONSE=$(aws amplify create-deployment --app-id $APP_ID --branch-name $BRANCH_NAME)
-        echo "AMPLIFY_URL=$(echo $DEPLOYMENT_RESPONSE | jq -r '.jobSummary | .[0] | .summary')" >> $GITHUB_ENV
-
-    - name: Start Amplify Deployment
-      run: |
-        BRANCH_NAME="pr-${{ github.event.number }}"
-        DEPLOYMENT_ID=$(echo $DEPLOYMENT_RESPONSE | jq -r '.deploymentId')
-        echo "APP_ID en el paso Start Deployment: $APP_ID"  # Verifica el valor de APP_ID
-        aws amplify start-deployment --app-id $APP_ID --branch-name $BRANCH_NAME --deployment-id $DEPLOYMENT_ID
+        echo "Enviando un trigger para que Amplify haga el despliegue automáticamente."
+        # Aquí no es necesario crear un despliegue manual si la rama ya está configurada
