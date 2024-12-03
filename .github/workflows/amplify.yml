@@ -26,10 +26,6 @@ jobs:
         aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
         aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
         aws configure set default.region $AWS_REGION
-        echo "APP_ID=$APP_ID" >> $GITHUB_ENV  # Exporta APP_ID a todos los pasos siguientes
-
-    - name: Verify APP_ID environment variable
-      run: echo "APP_ID=$APP_ID"  # Verifica que APP_ID esté disponible
 
     - name: Ensure Branch Exists in Amplify
       run: |
