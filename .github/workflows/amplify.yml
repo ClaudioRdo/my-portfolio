@@ -28,12 +28,18 @@ jobs:
         aws configure set default.region $AWS_REGION
         echo "APP_ID=$APP_ID" >> $GITHUB_ENV
 
-    - name: Ensure Branch Exists in Amplify
-      id: ensure-branch
-      run: |
-        echo "APP_ID=$APP_ID"
-        BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
-         aws amplify create-branch --app-id ${{ secrets.AMPLIFY_APP_ID }} --branch-name $BRANCH_NAME || echo "Branch already exists"
+        - name: Ensure Branch Exists in Amplify
+        id: ensure-branch
+        env:
+          APP_ID: ${{ secrets.AMPLIFY_APP_ID }}
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          if aws amplify list-branches --app-id "$APP_ID" | grep -q "\"branchName\": \"$BRANCH_NAME\""; then
+            echo "Branch $BRANCH_NAME already exists in Amplify."
+          else
+            echo "Creating branch $BRANCH_NAME in Amplify."
+            aws amplify create-branch --app-id "$APP_ID" --branch-name "$BRANCH_NAME"
+          fi
 
     - name: Trigger Amplify Deploy
       id: trigger-deploy
