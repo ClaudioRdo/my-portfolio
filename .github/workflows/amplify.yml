@@ -30,7 +30,7 @@ jobs:
     - name: Ensure Branch Exists in Amplify
       id: ensure-branch
       run: |
-        echo $APP_ID
+        echo "APP_ID=$APP_ID"
         BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
         aws amplify create-branch --app-id $APP_ID --branch-name $BRANCH_NAME || echo "Branch already exists"
 
