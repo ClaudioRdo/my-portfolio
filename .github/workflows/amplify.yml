@@ -33,6 +33,9 @@ jobs:
         echo "Pull Request Branch Name: ${{ github.event.pull_request.head.ref }}"
 
     - name: Ensure Branch Exists in Amplify
+      env:
+        APP_ID: ${{ secrets.AMPLIFY_APP_ID }}
+        AMPLIFY_DOMAIN: ${{ secrets.AMPLIFY_DOMAIN }}
       run: |
         BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
         if aws amplify list-branches --app-id "$APP_ID" | grep -q "\"branchName\": \"$BRANCH_NAME\""; then
