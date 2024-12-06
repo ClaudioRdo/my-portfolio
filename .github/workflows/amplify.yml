@@ -33,8 +33,6 @@ jobs:
         echo "Pull Request Branch Name: ${{ github.event.pull_request.head.ref }}"
 
     - name: Ensure Branch Exists in Amplify
-      env:
-        APP_ID: ${{ secrets.AMPLIFY_APP_ID }}
       run: |
         BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
         if aws amplify list-branches --app-id "$APP_ID" | grep -q "\"branchName\": \"$BRANCH_NAME\""; then
@@ -43,33 +41,37 @@ jobs:
           echo "Creating branch $BRANCH_NAME in Amplify."
           aws amplify create-branch --app-id "$APP_ID" --branch-name "$BRANCH_NAME"
         fi
-
+      
     - name: Trigger Amplify Deploy
-      env:
-        APP_ID: ${{ secrets.AMPLIFY_APP_ID }}
-        AMPLIFY_DOMAIN: ${{ secrets.AMPLIFY_DOMAIN }}
       run: |
-        BRANCH_NAME="test"
-        echo "Triggering deployment for branch: $BRANCH_NAME"
+          echo "Amplify will automatically deploy changes to the branch: $BRANCH_NAME"
 
-        # Validar que las variables no estén vacías
-        if [[ -z "$APP_ID" ]]; then
-          echo "Error: APP_ID está vacío. Revisa el secreto AMPLIFY_APP_ID."
-          exit 1
-        fi
+    # - name: Trigger Amplify Deploy
+    #   env:
+    #     APP_ID: ${{ secrets.AMPLIFY_APP_ID }}
+    #     AMPLIFY_DOMAIN: ${{ secrets.AMPLIFY_DOMAIN }}
+    #   run: |
+    #     BRANCH_NAME="test"
+    #     echo "Triggering deployment for branch: $BRANCH_NAME"
 
-        if [[ -z "$BRANCH_NAME" ]]; then
-          echo "Error: BRANCH_NAME está vacío. Asegúrate de que el evento de PR sea válido."
-          exit 1
-        fi
+    #     # Validar que las variables no estén vacías
+    #     if [[ -z "$APP_ID" ]]; then
+    #       echo "Error: APP_ID está vacío. Revisa el secreto AMPLIFY_APP_ID."
+    #       exit 1
+    #     fi
 
-        DEPLOYMENT_RESPONSE=$(aws amplify create-deployment --app-id "$APP_ID" --branch-name "$BRANCH_NAME" 2>&1) || {
-          echo "Error al crear el despliegue: $DEPLOYMENT_RESPONSE"
-          exit 1
-        }
+    #     if [[ -z "$BRANCH_NAME" ]]; then
+    #       echo "Error: BRANCH_NAME está vacío. Asegúrate de que el evento de PR sea válido."
+    #       exit 1
+    #     fi
 
-        echo "AMPLIFY_URL=https://${BRANCH_NAME}.${AMPLIFY_DOMAIN}" >> $GITHUB_ENV
-        echo "Deployment triggered for branch: $BRANCH_NAME"
+    #     DEPLOYMENT_RESPONSE=$(aws amplify create-deployment --app-id "$APP_ID" --branch-name "$BRANCH_NAME" 2>&1) || {
+    #       echo "Error al crear el despliegue: $DEPLOYMENT_RESPONSE"
+    #       exit 1
+    #     }
+
+    #     echo "AMPLIFY_URL=https://${BRANCH_NAME}.${AMPLIFY_DOMAIN}" >> $GITHUB_ENV
+    #     echo "Deployment triggered for branch: $BRANCH_NAME"
           
     - name: Wait for Deployment to Complete
       env:
