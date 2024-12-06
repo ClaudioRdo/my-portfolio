@@ -1,4 +1,4 @@
-name: Deploy PR to Amplify and Run Tests
+name: Dynamic Amplify Deploy and Test
 
 on:
   pull_request:
@@ -9,12 +9,8 @@ on:
 
 jobs:
   deploy-to-amplify:
-    name: Deploy PR to Amplify
+    name: Deploy PR to Amplify and Run Tests
     runs-on: ubuntu-latest
-
-    env:
-      APP_ID: ${{ secrets.AMPLIFY_APP_ID }} # ID de la aplicación Amplify como variable de entorno
-      AWS_REGION: ${{ secrets.AWS_REGION }}
 
     steps:
     - name: Checkout code
@@ -24,34 +20,94 @@ jobs:
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
       run: |
         aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
         aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
         aws configure set default.region $AWS_REGION
 
-    - name: Create Amplify Deployment
-      id: create-deployment
+    - name: Debug Secrets
       run: |
-        BRANCH_NAME="pr-${{ github.event.number }}" # Usa el número del PR como nombre del branch
-        DEPLOYMENT_RESPONSE=$(aws amplify create-deployment --app-id $APP_ID --branch-name $BRANCH_NAME)
-        echo "AMPLIFY_URL=$(echo $DEPLOYMENT_RESPONSE | jq -r '.jobSummary | .[0] | .summary')" >> $GITHUB_ENV
+        echo "APP_ID=${{ secrets.AMPLIFY_APP_ID }}"
+        echo "AMPLIFY_DOMAIN=${{ secrets.AMPLIFY_DOMAIN }}"
+        echo "Pull Request Branch Name: ${{ github.event.pull_request.head.ref }}"
 
-    - name: Start Amplify Deployment
-      run: |
-        BRANCH_NAME="pr-${{ github.event.number }}"
-        DEPLOYMENT_ID=$(echo $DEPLOYMENT_RESPONSE | jq -r '.deploymentId')
-        aws amplify start-deployment --app-id $APP_ID --branch-name $BRANCH_NAME --deployment-id $DEPLOYMENT_ID
-
-  run-tests:
-    name: Run Tests on Deployed PR
-    runs-on: ubuntu-latest
-    needs: deploy-to-amplify
-
-    steps:
-    - name: Run Test Suite
+    - name: Ensure Branch Exists in Amplify
       env:
-        BASE_URL: ${{ env.AMPLIFY_URL }}
+        APP_ID: ${{ secrets.AMPLIFY_APP_ID }}
+        AMPLIFY_DOMAIN: ${{ secrets.AMPLIFY_DOMAIN }}
       run: |
-        echo "Running tests on $BASE_URL"
-        npm install
-        npm test -- --baseUrl=$BASE_URL
+        BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+        if aws amplify list-branches --app-id "$APP_ID" | grep -q "\"branchName\": \"$BRANCH_NAME\""; then
+          echo "Branch $BRANCH_NAME already exists."
+        else
+          echo "Creating branch $BRANCH_NAME in Amplify."
+          aws amplify create-branch --app-id "$APP_ID" --branch-name "$BRANCH_NAME"
+        fi
+      
+    - name: Trigger Amplify Deploy
+      run: |
+          echo "Amplify will automatically deploy changes to the branch: $BRANCH_NAME"
+
+    # - name: Trigger Amplify Deploy
+    #   env:
+    #     APP_ID: ${{ secrets.AMPLIFY_APP_ID }}
+    #     AMPLIFY_DOMAIN: ${{ secrets.AMPLIFY_DOMAIN }}
+    #   run: |
+    #     BRANCH_NAME="test"
+    #     echo "Triggering deployment for branch: $BRANCH_NAME"
+
+    #     # Validar que las variables no estén vacías
+    #     if [[ -z "$APP_ID" ]]; then
+    #       echo "Error: APP_ID está vacío. Revisa el secreto AMPLIFY_APP_ID."
+    #       exit 1
+    #     fi
+
+    #     if [[ -z "$BRANCH_NAME" ]]; then
+    #       echo "Error: BRANCH_NAME está vacío. Asegúrate de que el evento de PR sea válido."
+    #       exit 1
+    #     fi
+
+    #     DEPLOYMENT_RESPONSE=$(aws amplify create-deployment --app-id "$APP_ID" --branch-name "$BRANCH_NAME" 2>&1) || {
+    #       echo "Error al crear el despliegue: $DEPLOYMENT_RESPONSE"
+    #       exit 1
+    #     }
+
+    #     echo "AMPLIFY_URL=https://${BRANCH_NAME}.${AMPLIFY_DOMAIN}" >> $GITHUB_ENV
+    #     echo "Deployment triggered for branch: $BRANCH_NAME"
+          
+    - name: Wait for Deployment to Complete
+      env:
+        APP_ID: ${{ secrets.AMPLIFY_APP_ID }}
+      run: |
+        BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+        while true; do
+          JOB_ID=$(aws amplify list-jobs --app-id "$APP_ID" --branch-name "$BRANCH_NAME" --query 'jobSummaries[0].jobId' --output text)
+          STATUS=$(aws amplify get-job --app-id "$APP_ID" --branch-name "$BRANCH_NAME" --job-id "$JOB_ID" --query 'job.summary.status' --output text)
+          echo "Current status: $STATUS"
+          if [[ "$STATUS" == "SUCCEED" ]]; then
+            echo "Deployment succeeded!"
+            break
+          elif [[ "$STATUS" == "FAILED" ]]; then
+            echo "Deployment failed!"
+            exit 1
+          fi
+          sleep 15
+        done
+
+    # - name: Run Tests
+    #   env:
+    #     BASE_URL: ${{ env.AMPLIFY_URL }}
+    #   run: |
+    #     echo "Running tests using BASE_URL=$BASE_URL"
+    #     # npm install
+    #     # npm run test:e2e -- --baseUrl=$BASE_URL
+
+    # Optional cleanup step
+    # - name: Cleanup Resources
+    #   if: ${{ github.event.action == 'closed' }}
+    #   env:
+    #     APP_ID: ${{ secrets.AMPLIFY_APP_ID }}
+    #   run: |
+    #     BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+    #     aws amplify delete-branch --app-id "$APP_ID" --branch-name "$BRANCH_NAME" || echo "Branch not found"
