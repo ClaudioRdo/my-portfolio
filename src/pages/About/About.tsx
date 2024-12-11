@@ -5,7 +5,7 @@ import "./About.css"
 const About: React.FC = () => {
   return (
     <Page id="about" className="about">
-      Abou
+      About
     </Page>
 
   )
