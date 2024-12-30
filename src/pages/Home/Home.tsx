@@ -4,7 +4,7 @@ import "./Home.css";
 
 const Home: React.FC = () => {
   return (
-    <Page id="home" className="home">home</Page>
+    <Page id="home" className="home">Home</Page>
   )
 }
 
