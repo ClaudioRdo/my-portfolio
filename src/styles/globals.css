@@ -43,7 +43,7 @@ main {
     text-align: center;
 }
 
-section {
+/* section {
   position: relative;
   background-color: var(--color-primary);
   width: 100%;
@@ -60,7 +60,41 @@ section {
 
 section:first-of-type {
     margin-top: 60px;
-}
+} */
+
+section {
+    position: relative;
+    background-color: var(--color-primary);
+    width: 100%; /* Ajusta el tamaño según tus necesidades */
+    height: 90vh;
+    display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 20px;
+    box-sizing: border-box;
+    border: 3px solid #ff4a4a; /* Borde interno sólido */
+    z-index: 1; /* Asegura que el contenido esté por encima */
+  }
+  
+  section::before,
+  section::after {
+    content: "";
+    position: absolute;
+    top: 10px; /* Ajusta la separación hacia afuera */
+    left: 10px; /* Ajusta la separación hacia afuera */
+    right: -10px; /* Ajusta el ancho hacia afuera */
+    bottom: -10px; /* Ajusta el alto hacia afuera */
+    z-index: -1; /* Detrás del contenido principal */
+    border-radius: inherit; /* Hereda bordes redondeados */
+    pointer-events: none; /* Evita interferencias */
+  }
+  
+  section::after {
+    border: 3px solid #ffc107; /* Borde externo sólido */
+    transform: translate(8px, 8px); /* Desplaza el borde */
+  }
+  
 
 /* Ancho mínimo para dispositivos móviles */
 @media (max-width: 320px) {
