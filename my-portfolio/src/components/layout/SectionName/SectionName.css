@@ -1,0 +1,29 @@
+.vertical-name {
+    position: fixed;
+    top: 50%;
+    right: 50px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .name-item {
+    text-transform: uppercase;
+    writing-mode: vertical-lr; /* Texto en vertical */
+    /* transform: rotate(180deg); Corrige la orientación del texto */
+    font-size: 2rem;
+    color: var(--color-text-light);
+    opacity: 0.5;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+  
+  .name-item.active {
+    opacity: 1;
+    font-weight: bold;
+    /* transform: rotate(180deg) scale(1.1); Asegura que el texto activo esté bien orientado */
+  }
+  
+  .name-item:hover {
+    opacity: 1;
+  }

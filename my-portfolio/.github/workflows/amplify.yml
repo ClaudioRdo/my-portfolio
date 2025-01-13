@@ -1,0 +1,19 @@
+name: Trigger Deploy and Test in Repo test
+
+on:
+  push:
+    branches:
+      - 'cd-test-*'
+
+jobs:
+  trigger-repo-b:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Repo test Workflow
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer ${{ secrets.TOKEN }}" \
+            https://api.github.com/repos/ClaudioRdo/test/dispatches \
+            -d '{"event_type": "deploy-and-test", "client_payload": {"branch": "${{ github.ref_name }}"}}'
