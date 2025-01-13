@@ -15,5 +15,5 @@ jobs:
           curl -X POST \
             -H "Accept: application/vnd.github.v3+json" \
             -H "Authorization: Bearer ${{ secrets.TOKEN }}" \
-            https://api.github.com/repos/mechanizedai/mlops-modernization-discovery-ui-e2e/dispatches \
+            https://api.github.com/repos/ClaudioRdo/test/dispatches \
             -d '{"event_type": "deploy-and-run-test-suite", "client_payload": {"branch": "${{ github.ref_name }}"}}'
