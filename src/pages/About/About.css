@@ -1,0 +1,38 @@
+.about-container {
+    display: flex;
+    flex-direction: column;
+    height: 90%;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin: 10px 0px 40px;
+    width: 100%;
+    color: var(--color-text-light);
+}
+
+
+.section-title::before {
+    position: relative;
+    counter-increment: section 1;
+    content: "0" counter(section) ". ";
+    color: var(--color-accent);
+}
+
+.section-title::after {
+    content: "";
+    position: relative;
+    top: -5px;
+    width: 75%;
+    height: 1px;
+    margin-left: 20px;
+    background-color: var(--color-accent);
+}
+
+.about-container p {
+    font-size: 1.5rem;
+    text-align: justify;
+    line-height: 1.5;
+}

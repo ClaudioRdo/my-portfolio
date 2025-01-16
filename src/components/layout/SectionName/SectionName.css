@@ -13,7 +13,7 @@
     writing-mode: vertical-lr; /* Texto en vertical */
     /* transform: rotate(180deg); Corrige la orientación del texto */
     font-size: 2rem;
-    color: var(--color-text-light);
+    color: var(--color-accent);
     opacity: 0.5;
     transition: opacity 0.3s, transform 0.3s;
   }

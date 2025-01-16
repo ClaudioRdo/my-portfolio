@@ -5,4 +5,11 @@
     --color-background: #f0f0f0; /* Color de fondo */
     --color-text-light: #e6e6e6; /* Texto claro */
     --color-text-dark: #293241; /* Texto oscuro */
+
+    --sz: 20px;
+	--c0: #ffffff00;
+	--c1: #bdd0e1;
+	--c2: #638bc0;
+	--c3: #293241;
+	--ts: 50%/ calc(var(--sz) * 13.25) calc(var(--sz) * 11.7);
 }

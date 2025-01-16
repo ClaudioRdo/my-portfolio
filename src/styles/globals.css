@@ -10,6 +10,20 @@ html {
     box-sizing: border-box;
     height: 100%;
     width: 100%;
+    background:
+    repeating-conic-gradient(#3b354730 0.000001%, var(--c0) 0.00005%, var(--c0) 0.00035%, var(--c0) 0.00005%) var(--ts),
+    repeating-conic-gradient(#35638b59 0.00002%, var(--c0) 0.00008%, var(--c0) 0.0008%, var(--c0) 0.00008%) var(--ts),
+    repeating-linear-gradient(90deg, var(--c0) 0 24.33%, var(--c3) 0 25%) var(--ts),
+    linear-gradient(210deg, var(--c0) 0 80%, var(--c3) calc(80% + 1px) 80.5%, var(--c0) calc(80.5% + 1px) 100%) var(--ts),
+    conic-gradient(from -90deg at 49.75% 100%, var(--c1) 0 30deg, var(--c0) 0 150deg, var(--c2) 0 60deg) var(--ts),
+    conic-gradient(from -180deg at 24.5% 50.5%, var(--c1) 0 119deg, var(--c0) 0 100%) var(--ts),
+    conic-gradient(from 120deg at 74.5% 50%, var(--c3) 0 120deg, var(--c0) 0 100%) var(--ts),
+    conic-gradient(from 180deg at 49.5% 34%, var(--c2) 0 60deg, var(--c0) 0 100%) var(--ts),
+    conic-gradient(from -120deg at 50% 34%, var(--c3) 0 60deg, var(--c0) 0 100%) var(--ts),
+    conic-gradient(from 0deg at 74.5% 17.5%, var(--c2) 0 60deg, var(--c3) 0 121deg, var(--c0) 0 100%) var(--ts),
+    linear-gradient(150deg, var(--c0) 0 40%, var(--c3) calc(40% + 1px) 40.5%, var(--c0) calc(40.5% + 1px) 100%) var(--ts),
+    linear-gradient(90deg, var(--c0) 0 50%, var(--c2) 0 75%, var(--c0) 0 100%) var(--ts),
+    repeating-linear-gradient(90deg, var(--c1) 0 24.33%, var(--c3) 0 25%) var(--ts);
 }
 
 *,
@@ -30,7 +44,7 @@ main {
     flex-direction: column;
     flex-grow: 1;
     width: 100%;
-    background-color: var(--color-primary);
+    background-color: transparent;
 }
 
 .page {
@@ -43,58 +57,24 @@ main {
     text-align: center;
 }
 
-/* section {
-  position: relative;
-  background-color: var(--color-primary);
-  width: 100%;
-  height: 90vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 50px 20px;
-  box-sizing: border-box;
-  border: 3px solid var(--color-accent);
-  box-shadow: 5px 5px 0px var(--color-accent);
+section {
+    position: relative;
+    background-color: var(--color-primary);
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 20px;
+    box-sizing: border-box;
+    border: 1px solid var(--color-accent);
+    box-shadow: 10px 10px 0 -1px var(--color-primary), 10px 10px var(--color-accent);
 }
 
 section:first-of-type {
     margin-top: 60px;
-} */
-
-section {
-    position: relative;
-    background-color: var(--color-primary);
-    width: 100%; /* Ajusta el tamaño según tus necesidades */
-    height: 90vh;
-    display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 50px 20px;
-    box-sizing: border-box;
-    border: 3px solid #ff4a4a; /* Borde interno sólido */
-    z-index: 1; /* Asegura que el contenido esté por encima */
-  }
-  
-  section::before,
-  section::after {
-    content: "";
-    position: absolute;
-    top: 10px; /* Ajusta la separación hacia afuera */
-    left: 10px; /* Ajusta la separación hacia afuera */
-    right: -10px; /* Ajusta el ancho hacia afuera */
-    bottom: -10px; /* Ajusta el alto hacia afuera */
-    z-index: -1; /* Detrás del contenido principal */
-    border-radius: inherit; /* Hereda bordes redondeados */
-    pointer-events: none; /* Evita interferencias */
-  }
-  
-  section::after {
-    border: 3px solid #ffc107; /* Borde externo sólido */
-    transform: translate(8px, 8px); /* Desplaza el borde */
-  }
-  
+}
 
 /* Ancho mínimo para dispositivos móviles */
 @media (max-width: 320px) {
@@ -106,23 +86,26 @@ section {
 /* Ancho mínimo para dispositivos pequeños */
 @media (min-width: 321px) and (max-width: 480px) {
     section {
-        max-width: 100%; /* Ancho total */
-        padding: 50px 10px; /* Ajuste de padding */
+        max-width: 100%;
+        /* Ancho total */
+        padding: 50px 10px;
+        /* Ajuste de padding */
     }
 }
 
 /* Ancho mínimo para tabletas */
 @media (min-width: 481px) and (max-width: 768px) {
     section {
-        max-width: 600px; /* Ancho específico para tabletas */
+        max-width: 600px;
     }
 }
 
 /* Ancho mínimo para computadoras de escritorio */
 @media (min-width: 769px) {
     section {
-        max-width: 1200px; /* Ancho máximo para computadoras */
-        padding: 80px 40px; /* Ajuste de padding */
+        max-width: 1200px;
+        /* Ancho máximo para computadoras */
+        padding: 80px 80px;
     }
 }
 
