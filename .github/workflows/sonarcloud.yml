@@ -21,7 +21,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'adoptium'  # O cualquier otra distribución que prefieras
+          distribution: 'zulu'  # O cualquier otra distribución que prefieras
 
       - name: Cache SonarCloud dependencies
         uses: actions/cache@v3
