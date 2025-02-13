@@ -5,9 +5,13 @@ import "./About.css"
 const About: React.FC = () => {
   return (
     <Page id="about" className="about">
-      about
+      About
     </Page>
-
+    <Page id="about" className="about">
+    About
+    <Page id="about" className="about">
+      About
+    </Page<Page>
   )
 }
 
