@@ -31,11 +31,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-sonarcloud-
 
+      # Run SonarCloud analysis manually if Automatic Analysis is disabled.
       - name: Run SonarCloud analysis
-        uses: sonarsource/sonarcloud-github-action@v2
-        with:
-          # SonarCloud requires the following inputs for the analysis
-          organization: claudiordo
-          projectKey: ClaudioRdo_my-portfolio
+        run: |
+          # Verificar si el token de SonarCloud está presente
+          if [ ! -z "$SONAR_TOKEN" ]; then
+            echo "Running SonarCloud Analysis"
+            # Ejecutar el análisis con el token de SonarCloud
+            sonar-scanner \
+              -Dsonar.projectKey=ClaudioRdo_my-portfolio \
+              -Dsonar.organization=claudiordo \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+          else
+            echo "SonarCloud Analysis skipped because token is missing"
+          fi
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
