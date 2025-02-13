@@ -34,8 +34,21 @@ jobs:
       # Install SonarScanner
       - name: Install SonarScanner
         run: |
-          wget -qO - https://sonarcloud.io/static/cnb/sonar-scanner-cli-4.6.2.2472-linux.zip -O sonar-scanner.zip
-          unzip sonar-scanner.zip -d /opt
+          echo "Verifying the network connection"
+          wget --version  # Check if wget is installed
+          
+          echo "Downloading SonarScanner"
+          wget -q https://github.com/SonarSource/sonar-scanner-cli/releases/download/4.6.2.2472/sonar-scanner-cli-4.6.2.2472-linux.zip -O sonar-scanner.zip
+          
+          # Verifica si la descarga fue exitosa
+          if [ $? -eq 0 ]; then
+            echo "Download successful, unzipping the file"
+            unzip sonar-scanner.zip -d /opt
+          else
+            echo "Download failed, please check the URL"
+            exit 1
+          fi
+          
           echo "/opt/sonar-scanner-4.6.2.2472-linux/bin" >> $GITHUB_PATH
 
       # Run SonarCloud analysis
