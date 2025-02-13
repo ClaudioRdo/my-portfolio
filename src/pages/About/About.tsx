@@ -7,7 +7,11 @@ const About: React.FC = () => {
     <Page id="about" className="about">
       About
     </Page>
-
+    <Page id="about" className="about">
+    About
+    <Page id="about" className="about">
+      About
+    </Page<Page>
   )
 }
 
