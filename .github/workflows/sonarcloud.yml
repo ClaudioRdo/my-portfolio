@@ -31,13 +31,18 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-sonarcloud-
 
-      # Run SonarCloud analysis manually if Automatic Analysis is disabled.
+      # Install SonarScanner
+      - name: Install SonarScanner
+        run: |
+          wget -qO - https://sonarcloud.io/static/cnb/sonar-scanner-cli-4.6.2.2472-linux.zip -O sonar-scanner.zip
+          unzip sonar-scanner.zip -d /opt
+          echo "/opt/sonar-scanner-4.6.2.2472-linux/bin" >> $GITHUB_PATH
+
+      # Run SonarCloud analysis
       - name: Run SonarCloud analysis
         run: |
-          # Verificar si el token de SonarCloud está presente
           if [ ! -z "$SONAR_TOKEN" ]; then
             echo "Running SonarCloud Analysis"
-            # Ejecutar el análisis con el token de SonarCloud
             sonar-scanner \
               -Dsonar.projectKey=ClaudioRdo_my-portfolio \
               -Dsonar.organization=claudiordo \
