@@ -6,7 +6,7 @@ on:
       - main
   pull_request:
     branches:
-      - main
+      - main 
 
 jobs:
   sonarcloud:
@@ -15,13 +15,13 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3 
 
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
-          distribution: 'zulu'
+          distribution: 'adoptium'  # O cualquier otra distribución que prefieras
 
       - name: Cache SonarCloud dependencies
         uses: actions/cache@v3
@@ -31,40 +31,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-sonarcloud-
 
-      # Install SonarScanner
-      - name: Install SonarScanner
-        run: |
-          echo "Verifying the network connection"
-          wget --version  # Check if wget is installed
-          
-          echo "Downloading SonarScanner"
-          # Usamos una URL de GitHub directamente
-          wget https://github.com/SonarSource/sonar-scanner-cli/releases/download/4.6.2.2472/sonar-scanner-cli-4.6.2.2472-linux.zip -O /tmp/sonar-scanner.zip
-
-          # Verifica si la descarga fue exitosa
-          if [ $? -eq 0 ]; then
-            echo "Download successful, unzipping the file"
-            unzip /tmp/sonar-scanner.zip -d /opt
-          else
-            echo "Download failed, please check the URL"
-            exit 1
-          fi
-          
-          # Añadir el binario al PATH
-          echo "/opt/sonar-scanner-4.6.2.2472-linux/bin" >> $GITHUB_PATH
-
-      # Run SonarCloud analysis
       - name: Run SonarCloud analysis
-        run: |
-          if [ ! -z "$SONAR_TOKEN" ]; then
-            echo "Running SonarCloud Analysis"
-            sonar-scanner \
-              -Dsonar.projectKey=ClaudioRdo_my-portfolio \
-              -Dsonar.organization=claudiordo \
-              -Dsonar.host.url=https://sonarcloud.io \
-              -Dsonar.login=${{ secrets.SONAR_TOKEN }}
-          else
-            echo "SonarCloud Analysis skipped because token is missing"
-          fi
+        uses: sonarsource/sonarcloud-github-action@v2  # Actualiza a v2
+        with:
+          organization: claudiordo
+          projectKey: ClaudioRdo_my-portfolio
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
