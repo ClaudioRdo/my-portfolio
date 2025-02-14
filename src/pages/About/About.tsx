@@ -8,7 +8,7 @@ const About: React.FC = () => {
       about
     </Page
     <Page id="about" className="about">
-      about
+      abou
     </Page
   )
 }
